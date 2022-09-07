@@ -11,11 +11,13 @@ datasource db {
 }
 
 model Gateway {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  serial      String       @unique() //a unique serial number (string), 
-  name        String //human-readable name (string),
-  ipv4        String //IPv4 address (to be validated),
-  peripherals Peripheral[] //multiple associated peripheral devices. 
+  id                   String       @id @default(auto()) @map("_id") @db.ObjectId
+  serial               String       @unique() //a unique serial number (string), 
+  name                 String //human-readable name (string),
+  ipv4                 String //IPv4 address (to be validated),
+  peripherals          Peripheral[] //multiple associated peripheral devices. 
+  maxPeripherals       Int          @default(10) // Up to 10 devices
+  generatedPeripherals Int          @default(0) // To no generate all spaces at the begining
 }
 
 model Peripheral {
@@ -26,4 +28,5 @@ model Peripheral {
   status    String // status - online/offline.
   gateway   Gateway  @relation(fields: [gatewayId], references: [id])
   gatewayId String   @db.ObjectId
+  claimedBy String   @unique // Same request cant claim two items at time
 }

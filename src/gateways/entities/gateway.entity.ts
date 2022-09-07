@@ -13,4 +13,6 @@ export class GatewayEntity implements Gateway {
   @ApiProperty({ example: '127.0.0.1' })
   @IsIpv4()
   ipv4: string;
+  maxPeripherals: number;
+  generatedPeripherals: number;
 }
