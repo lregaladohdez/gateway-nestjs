@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Gateway {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  serial      String       @unique() //a unique serial number (string), 
+  name        String //human-readable name (string),
+  ipv4        String //IPv4 address (to be validated),
+  peripherals Peripheral[] //multiple associated peripheral devices. 
+}
+
+model Peripheral {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  uuid      String   @unique //   a UID (number),
+  vendor    String // vendor (string),
+  date      DateTime // date created,
+  status    String // status - online/offline.
+  gateway   Gateway  @relation(fields: [gatewayId], references: [id])
+  gatewayId String   @db.ObjectId
+}
