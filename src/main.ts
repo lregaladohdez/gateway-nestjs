@@ -7,7 +7,6 @@ import { PrismaService } from './prisma/prisma.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors();
-
   const config = new DocumentBuilder()
     .setTitle('Gateways Api Documentation')
     .setDescription('Documentation for Gateway Api')
@@ -25,6 +24,6 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({ transform: true, stopAtFirstError: true }),
   );
-  await app.listen(4000);
+  await app.listen(process.env.PORT || 4000);
 }
 bootstrap();
