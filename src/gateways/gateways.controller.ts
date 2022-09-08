@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   Query,
+  UseFilters,
 } from '@nestjs/common';
 import { GatewaysService } from './gateways.service';
 import { CreateGatewayDto } from './dto/create-gateway.dto';

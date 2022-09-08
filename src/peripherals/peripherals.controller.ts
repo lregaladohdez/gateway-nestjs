@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  UseFilters,
 } from '@nestjs/common';
 import { PeripheralsService } from './peripherals.service';
 import { CreatePeripheralDto } from './dto/create-peripheral.dto';
@@ -13,7 +14,6 @@ import { UpdatePeripheralDto } from './dto/update-peripheral.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PeripheralEntity } from './entities/peripheral.entity';
 import { FindPeripheralResponseDto } from './dto/find-response.dto';
-import { filter } from 'rxjs';
 import { FindPeripheralDto } from './dto/find-perihperal.dto';
 
 @Controller('peripherals')
