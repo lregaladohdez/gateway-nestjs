@@ -1,17 +1,17 @@
 import { Injectable, NestMiddleware } from '@nestjs/common';
 import { UUID } from 'bson';
-import e from 'express';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 import { PeriperalStatus } from './entities/peripheralStatus';
 
 @Injectable()
 export class AddMiddleware implements NestMiddleware {
   constructor(private prisma: PrismaService) {}
   async use(req: any, res: any, next: () => void) {
-    const gatewayId = req?.body?.gatewayId as string;
+    const gatewayId = +req?.body?.gatewayId;
     const gateway = await this.prisma.gateway.findUniqueOrThrow({
       where: { id: gatewayId },
     });
+    console.log('Finded Gateway', gateway);
     if (gateway.generatedPeripherals >= gateway.maxPeripherals) {
       next();
     }
@@ -35,11 +35,10 @@ export class AddMiddleware implements NestMiddleware {
     ]);
 
     //Check if still room available after update for new peripherals
-    if (
-      updatedGateway.generatedPeripherals < updatedGateway[1].maxPeripherals
-    ) {
+    if (updatedGateway.generatedPeripherals < updatedGateway.maxPeripherals) {
+      console.log('Added new periperal');
       await this.prisma.peripheral.update({
-        where: { id: res },
+        where: { id: newPeripheral.id },
         data: { claimedBy: null },
       });
       //Delete extra peripheral created

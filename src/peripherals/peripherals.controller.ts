@@ -35,7 +35,7 @@ export class PeripheralsController {
   @Get(':id')
   @ApiResponse({ type: PeripheralEntity })
   findOne(@Param('id') id: string) {
-    return this.peripheralsService.findOne(id);
+    return this.peripheralsService.findOne(+id);
   }
 
   @Patch(':id')
@@ -44,12 +44,12 @@ export class PeripheralsController {
     @Param('id') id: string,
     @Body() updatePeripheralDto: UpdatePeripheralDto,
   ) {
-    return this.peripheralsService.update(id, updatePeripheralDto);
+    return this.peripheralsService.update(+id, updatePeripheralDto);
   }
 
   @Delete(':id')
   @ApiResponse({ type: PeripheralEntity })
   remove(@Param('id') id: string) {
-    return this.peripheralsService.remove(id);
+    return this.peripheralsService.remove(+id);
   }
 }

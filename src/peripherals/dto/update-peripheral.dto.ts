@@ -4,5 +4,5 @@ import { CreatePeripheralDto } from './create-peripheral.dto';
 
 export class UpdatePeripheralDto extends PartialType(CreatePeripheralDto) {
   @Exclude()
-  gatewayId?: string;
+  gatewayId?: number;
 }

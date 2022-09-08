@@ -39,7 +39,7 @@ export class GatewaysController {
   @Get(':id')
   @ApiResponse({ type: GatewayEntity })
   findOne(@Param('id') id: string, @Query('peripherals') peripherals: boolean) {
-    return this.gatewaysService.findOne(id, peripherals);
+    return this.gatewaysService.findOne(+id, peripherals);
   }
 
   @Patch(':id')
@@ -49,12 +49,12 @@ export class GatewaysController {
     @Body() updateGatewayDto: UpdateGatewayDto,
     @Query('peripherals') peripherals: boolean,
   ) {
-    return this.gatewaysService.update(id, updateGatewayDto, peripherals);
+    return this.gatewaysService.update(+id, updateGatewayDto, peripherals);
   }
 
   @Delete(':id')
   @ApiResponse({ type: GatewayEntity })
   remove(@Param('id') id: string) {
-    return this.gatewaysService.remove(id);
+    return this.gatewaysService.remove(+id);
   }
 }

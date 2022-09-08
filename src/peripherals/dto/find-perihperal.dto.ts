@@ -6,5 +6,5 @@ export class FindPeripheralDto extends FindDto {
   @IsIn(['id', 'date', 'uuid', 'vendor', 'gatewayId', 'status'])
   orderBy?: string;
   @ApiProperty()
-  gatewayId: string;
+  gatewayId: number;
 }

@@ -1,11 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Gateway } from '@prisma/client';
-import { isIPv4 } from 'net';
 import { IsIpv4 } from '../../common/validators/is-ip-v4.decorator';
 
 export class GatewayEntity implements Gateway {
   @ApiProperty()
-  id: string;
+  id: number;
   @ApiProperty()
   serial: string;
   @ApiProperty()

@@ -6,12 +6,12 @@ generator client {
 }
 
 datasource db {
-  provider = "mongodb"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
 model Gateway {
-  id                   String       @id @default(auto()) @map("_id") @db.ObjectId
+  id                   Int          @id @default(autoincrement())
   serial               String       @unique() //a unique serial number (string), 
   name                 String //human-readable name (string),
   ipv4                 String //IPv4 address (to be validated),
@@ -21,12 +21,12 @@ model Gateway {
 }
 
 model Peripheral {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  id        Int      @id @default(autoincrement())
   uuid      String   @unique //   a UID (number),
   vendor    String // vendor (string),
   date      DateTime // date created,
   status    String // status - online/offline.
   gateway   Gateway  @relation(fields: [gatewayId], references: [id])
-  gatewayId String   @db.ObjectId
-  claimedBy String   @unique // Same request cant claim two items at time
+  gatewayId Int
+  claimedBy String?  @unique // Same request cant claim two items at time
 }

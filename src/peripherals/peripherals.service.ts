@@ -1,9 +1,5 @@
-import {
-  Injectable,
-  NotFoundException,
-  RequestTimeoutException,
-} from '@nestjs/common';
-import { Peripheral, Prisma } from '@prisma/client';
+import { Injectable, RequestTimeoutException } from '@nestjs/common';
+import { Prisma } from '@prisma/client';
 import { UUID } from 'bson';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreatePeripheralDto } from './dto/create-peripheral.dto';
@@ -11,13 +7,6 @@ import { FindPeripheralDto } from './dto/find-perihperal.dto';
 import { FindPeripheralResponseDto } from './dto/find-response.dto';
 import { UpdatePeripheralDto } from './dto/update-peripheral.dto';
 import { PeripheralEntity } from './entities/peripheral.entity';
-
-function checkBeforeReturn(peripheral: Peripheral) {
-  if (peripheral.claimedBy === null) {
-    throw new NotFoundException('Peripheral Not Found');
-  }
-  return peripheral;
-}
 
 const MAX_TRIES_BEFORE_ERROR = 3;
 
@@ -51,21 +40,23 @@ export class PeripheralsService {
     filters: FindPeripheralDto,
   ): Promise<FindPeripheralResponseDto> {
     const match: Prisma.PeripheralFindManyArgs = {
-      where: {},
+      where: { claimedBy: { not: null } },
       orderBy: { [filters.orderBy || 'date']: filters.order || 'asc' },
       take: filters.take || 10,
       skip: filters.skip || 0,
     };
     if (filters.gatewayId) {
-      match.where.gatewayId = filters.gatewayId;
+      match.where = { gatewayId: filters.gatewayId };
     }
     if (filters.search) {
-      match.where.OR = ['vendor', 'uuid', 'status'].map((prop) => ({
-        [prop]: {
-          contains: filters.search,
-          mode: Prisma.QueryMode.insensitive,
-        },
-      }));
+      match.where = {
+        ...match.where,
+        OR: ['vendor', 'uuid', 'status'].map((prop) => ({
+          [prop]: {
+            contains: filters.search,
+          },
+        })),
+      };
     }
     return {
       data: await this.prisma.peripheral.findMany(match),
@@ -75,14 +66,14 @@ export class PeripheralsService {
     };
   }
 
-  findOne(id: string): Promise<PeripheralEntity> {
+  findOne(id: number): Promise<PeripheralEntity> {
     return this.prisma.peripheral.findFirstOrThrow({
       where: { id, claimedBy: { not: null } },
     });
   }
 
   async update(
-    id: string,
+    id: number,
     updatePeripheralDto: UpdatePeripheralDto,
   ): Promise<PeripheralEntity> {
     return this.prisma.peripheral.update({
@@ -95,11 +86,12 @@ export class PeripheralsService {
     });
   }
 
-  async remove(id: string): Promise<PeripheralEntity> {
+  async remove(id: number): Promise<PeripheralEntity> {
     return this.prisma.peripheral.update({
       where: { id },
       data: {
         claimedBy: null,
+        uuid: new UUID().toString(), // Randomize uuid so the same device can connect in the future
       },
     });
   }

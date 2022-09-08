@@ -1,10 +1,10 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Peripheral } from '@prisma/client';
-import { IsDateString, IsIn, IsUUID } from 'class-validator';
+import { IsDateString, IsIn, IsOptional, IsUUID } from 'class-validator';
 
 export class PeripheralEntity implements Peripheral {
   @ApiProperty()
-  id: string;
+  id: number;
   @ApiProperty()
   @IsUUID()
   uuid: string;
@@ -17,6 +17,7 @@ export class PeripheralEntity implements Peripheral {
   @IsIn(['offline', 'online'])
   status: string;
   @ApiProperty()
-  gatewayId: string;
-  claimedBy: string;
+  gatewayId: number;
+  @IsOptional()
+  claimedBy: string | null;
 }

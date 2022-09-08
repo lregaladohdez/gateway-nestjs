@@ -1,11 +1,11 @@
 import { Injectable, NestMiddleware, NotFoundException } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class FindMiddleware implements NestMiddleware {
-  constructor(private prisma: PrismaClient) {}
+  constructor(private prisma: PrismaService) {}
   async use(req: any, res: any, next: () => void) {
-    const id = req?.params?.[0] as string;
+    const id = +req?.params?.[0];
     const peripheral = await this.prisma.peripheral.findUniqueOrThrow({
       where: { id },
     });
