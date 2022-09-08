@@ -18,9 +18,6 @@ export class PeripheralsModule {
         { path: 'peripherals/*', method: RequestMethod.DELETE },
       )
       .apply(AddMiddleware)
-      .forRoutes(
-        { path: 'peripherals', method: RequestMethod.POST },
-        { path: 'peripherals/*', method: RequestMethod.PATCH },
-      );
+      .forRoutes({ path: 'peripherals', method: RequestMethod.POST });
   }
 }
