@@ -1,7 +1,7 @@
 # Gateway Project
-
-NestJS Api for Gateway Project
-
+![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/lregaladohdez/gateway-nestjs)
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/lregaladohdez/gateway-nestjs/Node.js%20CI)
+![GitHub top language](https://img.shields.io/github/languages/top/lregaladohdez/gateway-nestjs)
 ## First Steps
 
 After clone the project you can run the app by the following command:
