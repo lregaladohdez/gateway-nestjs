@@ -31,7 +31,8 @@ export class GatewaysController {
   @ApiResponse({ type: FindGatewayResponseDto })
   findAll(
     @Query() filters: FindGatewayDto,
-    @Query('peripherals') peripherals: boolean,
+    @Query('peripherals')
+    peripherals = false,
   ) {
     return this.gatewaysService.findAll(filters, peripherals);
   }

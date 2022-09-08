@@ -10,13 +10,14 @@ import {
 import { PeripheralsService } from './peripherals.service';
 import { CreatePeripheralDto } from './dto/create-peripheral.dto';
 import { UpdatePeripheralDto } from './dto/update-peripheral.dto';
-import { ApiResponse } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { PeripheralEntity } from './entities/peripheral.entity';
 import { FindPeripheralResponseDto } from './dto/find-response.dto';
 import { filter } from 'rxjs';
 import { FindPeripheralDto } from './dto/find-perihperal.dto';
 
 @Controller('peripherals')
+@ApiTags('Peripherals')
 export class PeripheralsController {
   constructor(private readonly peripheralsService: PeripheralsService) {}
 
